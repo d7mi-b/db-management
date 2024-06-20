@@ -1,0 +1,108 @@
+@font-face {
+    font-family: Cairo;
+    src: url('./font/Cairo/Cairo-VariableFont_slnt\,wght.ttf');
+}
+
+:root {
+    --accent-color: #3D63DD;
+    --hover-color: #D0DFFF;
+    --bg-color: #FFFFFF;
+    --header-color: #1E1F24;
+    --font-color: #62636C;
+    --card-color: #F7F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Cairo;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    transition: .3s;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--font-color);
+    background-image: linear-gradient(0deg, var(--bg-color), #F7F9FF);
+}
+
+header {
+    color: var(--header-color);
+}
+
+img {
+    width: 100%;
+}
+
+form {
+    background-color: var(--card-color);
+    border: 0.13rem solid var(--hover-color);
+    width: 40rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+form > section {
+    margin: 1rem 0;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+
+input,
+select,
+textarea {
+    border: 0.13rem solid #ddd;
+    height: 3rem;
+    border-radius: 5px;
+    width: 100%;
+    padding: 1rem !important;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: none;
+    border: .13rem solid var(--hover-color);
+}
+
+.page {
+    min-height: 100vh;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-container {
+    margin: 1rem 0;
+}
+
+.btn {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: .5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.125rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: var(--hover-color);
+    color: var(--accent-color);
+}
+
+.bg-icon {
+    font-size: 30rem;
+    color: #EDF2FE;
+    line-height: 0;
+    z-index: -1;
+}
