@@ -11,7 +11,7 @@ class DatabaseSystemFactory {
             return this.instance;
         }
         console.log("There is no instance yet");
-        if (databaseSystem === 'mysql' && config) {
+        if (databaseSystem === 'MySQL' && config) {
             return this.instance = MySQL_1.default.getInstance(config);
         }
     }

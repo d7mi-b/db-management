@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const databaseSystems = [
     {
@@ -22,6 +22,37 @@ const Home = () => {
     const [system, setSystem] = useState<string | null>(null);
     const [host, setHost] = useState<string>('');
     const [port, setPort] = useState<string>('');
+    const [user, setUser] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+
+    useEffect(() => {
+        if (system === 'MySQL') {
+            setHost('localhost');
+            setPort('3306');
+        }
+    }, [system]);
+
+    async function connect (e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        await fetch('/system/connect', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ 
+                system,
+                config: {
+                    host, port, user, password
+                }
+            })
+        }).then(res => {
+            console.log(res);
+            return res.json();
+        }).then(data => {
+            console.log(data);
+        }).catch(err => console.log("error: ", err));
+    }
 
     return (
         <main className="center page py-16">
@@ -63,7 +94,7 @@ const Home = () => {
             {
                 system &&
                 <section className="w-full my-8">
-                    <form className="rounded">
+                    <form className="rounded" onSubmit={connect}>
                         <section>
                             <label htmlFor="system" className="block">Database System</label>
 
@@ -99,6 +130,16 @@ const Home = () => {
                         <section>
                             <label htmlFor="port">Port</label>
                             <input type="text" name="port" value={port} onChange={(e) => setPort(e.target.value)} />
+                        </section>
+
+                        <section>
+                            <label htmlFor="user">User</label>
+                            <input type="text" name="user" value={user} onChange={(e) => setUser(e.target.value)} />
+                        </section>
+
+                        <section>
+                            <label htmlFor="password">Password</label>
+                            <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </section>
 
                         <section className="btn-container center">

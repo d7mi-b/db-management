@@ -15,7 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const DatabaseSystemFactory_1 = __importDefault(require("./models/DatabaseSystemFactory"));
+const DatabaseSystemRoutes = require("./routes/DatabaseSystemRoutes");
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
+// app.use(express.urlencoded({extended: true }));
+// app.use(cros());
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
 app.get("/", (req, res, next) => {
     try {
@@ -25,6 +29,7 @@ app.get("/", (req, res, next) => {
         next(error);
     }
 });
+app.use('/system', DatabaseSystemRoutes);
 app.get("/try", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const system = DatabaseSystemFactory_1.default.get();
