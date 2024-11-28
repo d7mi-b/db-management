@@ -7,4 +7,5 @@ const express = require("express");
 const DatabaseSystemController_1 = __importDefault(require("../controllers/DatabaseSystemController"));
 const router = express.Router();
 router.post('/connect', DatabaseSystemController_1.default.connect);
+router.get('/disconnect', DatabaseSystemController_1.default.disconnect);
 module.exports = router;

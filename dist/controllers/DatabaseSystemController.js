@@ -22,11 +22,32 @@ class DatabaseSystemController {
                 if (!db)
                     throw new Error(db);
                 db.connect();
-                res.send("Connect to MySQL databse");
+                return res.status(200).json({
+                    status: true,
+                    message: "Connected to database",
+                });
             }
             catch (err) {
                 if (err && err.message)
-                    res.json({ err: err.message });
+                    res.status(400).json({ err: err.message });
+            }
+        });
+    }
+    static disconnect(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const db = DatabaseSystemFactory_1.default.get();
+                if (!db)
+                    throw new Error(db);
+                db.disconnect();
+                return res.status(200).json({
+                    status: true,
+                    message: "Disconnected from database",
+                });
+            }
+            catch (err) {
+                if (err && err.message)
+                    res.status(400).json({ err: err.message });
             }
         });
     }

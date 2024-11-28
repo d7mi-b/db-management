@@ -35,36 +35,6 @@ app.get("/try", async (req: Request, res: Response, next: NextFunction): Promise
     }
 });
 
-app.get("/connect", (req: Request, res: Response, next: NextFunction): void => {
-    try {
-        const system = DatabaseSystemFactory.get("mysql", {
-            host: "localhost",
-            port: 3306,
-            user: "root",
-            password: '2546'
-        });
-        
-        if (system)
-            system.connect();
-        
-        res.send("Connect to MySQL databse");
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.get("/disconnect", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-        const system = DatabaseSystemFactory.get();
-        
-        const database = await system.dropDatabase('test_db_mangment');
-        
-        res.json(database);
-    } catch (error) {
-        next(error);
-    }
-});
-
 const PORT = 3000;
 
 app.listen(PORT, () => {

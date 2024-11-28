@@ -40,32 +40,6 @@ app.get("/try", (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         next(error);
     }
 }));
-app.get("/connect", (req, res, next) => {
-    try {
-        const system = DatabaseSystemFactory_1.default.get("mysql", {
-            host: "localhost",
-            port: 3306,
-            user: "root",
-            password: '2546'
-        });
-        if (system)
-            system.connect();
-        res.send("Connect to MySQL databse");
-    }
-    catch (error) {
-        next(error);
-    }
-});
-app.get("/disconnect", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const system = DatabaseSystemFactory_1.default.get();
-        const database = yield system.dropDatabase('test_db_mangment');
-        res.json(database);
-    }
-    catch (error) {
-        next(error);
-    }
-}));
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
