@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import usePost from "../hooks/usePost";
+import { useSystemContext } from "../hooks/useSystemContext";
 
 const databaseSystems = [
     {
@@ -19,40 +22,37 @@ const databaseSystems = [
 ]
 
 const Home = () => {
+    const { dispatch } = useSystemContext();
     const [system, setSystem] = useState<string | null>(null);
-    const [host, setHost] = useState<string>('');
-    const [port, setPort] = useState<string>('');
-    const [user, setUser] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
 
-    useEffect(() => {
-        if (system === 'MySQL') {
-            setHost('localhost');
-            setPort('3306');
-        }
-    }, [system]);
+    const { post: connection, result, error, setBody } = usePost('/system/connect', );
 
     async function connect (e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        await fetch('/system/connect', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ 
+        const form = new FormData(e.target as HTMLFormElement);
+        const body = Object.fromEntries(form.entries());
+        console.log("body: ", body);
+        
+
+        if (system) {
+            setBody({
                 system,
-                config: {
-                    host, port, user, password
-                }
-            })
-        }).then(res => {
-            console.log(res);
-            return res.json();
-        }).then(data => {
-            console.log(data);
-        }).catch(err => console.log("error: ", err));
+                config: body
+            });
+    
+            setTimeout(() => {
+                connection.mutate();
+            }, 100); 
+        }
     }
+
+    useEffect(() => {
+        if (result && system) {
+            localStorage.setItem('system', system);
+            dispatch({ type: "CONNECT", payload: system })
+        }
+    }, [result]);
 
     return (
         <main className="center page py-16">
@@ -124,34 +124,30 @@ const Home = () => {
 
                         <section>
                             <label htmlFor="host">Host</label>
-                            <input type="text" name="host" value={host} onChange={(e) => setHost(e.target.value)} />
+                            <input type="text" name="host" defaultValue='localhost' />
                         </section>
 
                         <section>
                             <label htmlFor="port">Port</label>
-                            <input type="text" name="port" value={port} onChange={(e) => setPort(e.target.value)} />
+                            <input type="text" name="port" defaultValue='3306' />
                         </section>
 
                         <section>
                             <label htmlFor="user">User</label>
-                            <input type="text" name="user" value={user} onChange={(e) => setUser(e.target.value)} />
+                            <input type="text" name="user" defaultValue='root' />
                         </section>
 
                         <section>
                             <label htmlFor="password">Password</label>
-                            <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="password" name="password" defaultValue='2546' />
                         </section>
 
-                        <section className="btn-container center">
-                            <button className="btn">Connect</button>
+                        <section className="btn-container center disabled:opacity-50">
+                            <button disabled={connection.isLoading} className="btn">Connect</button>
                         </section>
                     </form>
                 </section>
             }
-
-            {/* <section className="bg-icon absolute bottom-0 left-0">
-                <i className="fi fi-ts-database"></i>
-            </section> */}
         </main>
     );
 }
